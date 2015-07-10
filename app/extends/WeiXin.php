@@ -99,7 +99,7 @@ class WeiXin {
                             array(
                                 'type' => 'view',
                                 'name' => urlencode('首页'),
-                                'url' => 'http://wx.ihermit.cn?a=index_index'
+                                'url' => $this->getAuth2Url('http://wx.ihermit.cn?a=index_index')
                             )
                         )
                     )
@@ -112,6 +112,16 @@ class WeiXin {
             $this->replyMsgText(json_encode($res));
         }
         echo '';
+    }
+
+    /**
+     * 获取 Auth2 Url
+     * @param string $url 跳转的url
+     * @return string
+     */
+    private function getAuth2Url($url){
+        $url = urlencode($url);
+        return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$this->_app_id.'&redirect_uri='.$url.'&response_type=code&scope=snsapi_base&state=wx#wechat_redirect';
     }
 
     //处理事件
