@@ -33,9 +33,9 @@ class WeiXin {
      * @return bool
      */
     public function checkSignature() {
-        $signature = $_GET["signature"];
-        $timestamp = $_GET["timestamp"];
-        $nonce = $_GET["nonce"];
+        $signature = isset($_GET["signature"])?$_GET["signature"]:'';
+        $timestamp = isset($_GET["timestamp"])?$_GET["timestamp"]:'';
+        $nonce = isset($_GET["nonce"])?$_GET["nonce"]:'';
         $tmpArr = array($this->_token,$timestamp,$nonce);
         sort($tmpArr, SORT_STRING);
         $tmpStr = implode($tmpArr);
