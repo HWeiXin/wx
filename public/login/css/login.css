@@ -1,0 +1,20 @@
+body{background-color: #F3F3F3;font-family: "Microsoft YaHei",Arial,Helvetica,sans-serif;font-size: 14px;}
+#login_box{text-align: center;position: relative;top: 210px;}
+#sys_title{font-size: 20px;color: #5D5D5D;position: relative;top: -10px;}
+.login_input{
+    background-color: #FFFFFF;border: 1px solid #e5e6e7;outline: none;
+    padding: 8px 12px;width: 300px;border-radius: 3px;margin-top: 10px;
+    color: #A9A9A9;font-size: 14px;
+    transition: 0.4s;
+    -moz-transition: 0.4s;
+    -webkit-transition: 0.4s;
+}
+.login_input:focus{border: 1px solid #18A689;}
+#login_box input.error{border: 1px solid #FF8E8E;}
+#btn_login{
+    background-color: #18A689;display: inline-block;width: 300px;padding: 6px 12px;
+    margin-top: 10px;color: white;border-radius: 4px;text-decoration: none;
+}
+#btn_login:hover{background-color: #1FBA9A;}
+#copyright{position: relative;top: 10px;left: -6px;}
+#err_msg{color: red;margin-top: 10px;display: none;}
