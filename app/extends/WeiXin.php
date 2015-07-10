@@ -94,11 +94,11 @@ class WeiXin {
             $menu = array(
                 'button' => array(
                     array(
-                        'name' => urlencode('测试菜单'),
+                        'name' => 'Menu',
                         'sub_button' => array(
                             array(
                                 'type' => 'view',
-                                'name' => urlencode('首页'),
+                                'name' => 'Index',
                                 'url' => $this->getAuth2Url('http://wx.ihermit.cn')
                             )
                         )
@@ -120,6 +120,7 @@ class WeiXin {
      * @return string
      */
     private function getAuth2Url($url){
+        $url = urlencode($url);
         return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$this->_app_id.'&redirect_uri='.$url.'&response_type=code&scope=snsapi_base&state=wx#wechat_redirect';
     }
 
@@ -248,7 +249,7 @@ class WeiXin {
      */
     public function creatMenu($menu){
         $url = $this->getApiUrl('/menu/create');
-        $json_data = urldecode(json_encode($menu));
+        $json_data = json_encode($menu);
         return Curl::instance()->post($url,$json_data);
     }
 
