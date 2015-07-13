@@ -1,4 +1,5 @@
 <div id="login_box">
+    <?php p('当前用户access_token：'.$access_token); ?>
     <span id="sys_title"><?php echo H::app()->getConfig('app_name'); ?></span>
     <div>
         <input id="user_account" value="<?php echo isset($cookie['account'])?$cookie['account']:''; ?>" class="login_input" placeholder="账号" type="text">

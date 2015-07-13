@@ -3,6 +3,7 @@
 class WeiXin {
 
     private $_api_url = 'https://api.weixin.qq.com/cgi-bin';
+    private $_sns_url = 'https://api.weixin.qq.com/sns';
 
     private $_token = '';//微信请求我们的验证token
     private $_app_id = '';
@@ -263,12 +264,26 @@ class WeiXin {
     }
 
     /**
-     * 获取POST请求参数
-     * @param array $param
+     * 获取用户网页access_token
+     * @param string $code 微信用户的cede码
      * @return array
      */
-    private function postParam($param = array()){
-        return $param;
+    public function getUserWebAccessToken($code){
+        $url = $this->_sns_url.'/oauth2/access_token?appid='.$this->_app_id.'&secret='.$this->_app_secret.'&code='.$code.'&grant_type=authorization_code';
+        return Curl::instance()->get($url);
+    }
+
+    /**
+     * 获取WEB用户信息
+     * @param string $access_token
+     * @param string $openid 微信WEB openid
+     * @return array
+     */
+    public function getSnsUserInfo($access_token,$openid){
+        $url = $this->_sns_url.'/userinfo?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
+        return file_get_contents($url);
+
+        return Curl::instance()->get($url);
     }
 
 } 
