@@ -171,4 +171,18 @@ class Controller {
         return $url;
     }
 
+    /**
+     * 跳转页面
+     * @param string $url controller/index 或者 http://www.bdlong.cn
+     * @param array $params
+     */
+    public function redirect($url, $params = array()) {
+        $location = $url;
+        if (!(strpos($url, 'http://') === 0 || strpos($url, 'https://') === 0)) {
+            $location = $this->genurl($url, $params);
+        }
+        header("Location:" . $location);
+        exit;
+    }
+
 }

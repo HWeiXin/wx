@@ -119,7 +119,7 @@ class WeiXin {
      * @param string $url 跳转的url
      * @return string
      */
-    private function getAuth2Url($url){
+    public function getAuth2Url($url){
         $url = urlencode($url);
         return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$this->_app_id.'&redirect_uri='.$url.'&response_type=code&scope=snsapi_base&state=wx#wechat_redirect';
     }
