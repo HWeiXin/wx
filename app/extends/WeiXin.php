@@ -94,12 +94,12 @@ class WeiXin {
             $menu = array(
                 'button' => array(
                     array(
-                        'name' => 'Menu',
+                        'name' => urlencode('菜单'),
                         'sub_button' => array(
                             array(
                                 'type' => 'view',
-                                'name' => 'Index',
-                                'url' => $this->getAuth2Url('http://wx.ihermit.cn')
+                                'name' => urlencode('首页'),
+                                'url' => 'http://wx.ihermit.cn'
                             )
                         )
                     )
@@ -249,7 +249,7 @@ class WeiXin {
      */
     public function creatMenu($menu){
         $url = $this->getApiUrl('/menu/create');
-        $json_data = json_encode($menu);
+        $json_data = urldecode(json_encode($menu));
         return Curl::instance()->post($url,$json_data);
     }
 
