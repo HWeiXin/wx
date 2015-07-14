@@ -17,11 +17,11 @@ class IndexController extends Controller{
             $user_data = WeiXin::model()->getUserWebAccessToken($code);
             $user_data['access_token_deadline'] = $user_data['expires_in'] + time();
 
-//            $user_info = WeiXin::model()->getSnsUserInfo($user_data['access_token'],$user_data['openid']);
-//            $user_data['nickname'] = $user_info['nickname'];
-//            $user_data['sex'] = $user_info['sex'];
-//            $user_data['city'] = $user_info['city'];
-//            $user_data['unionid'] = $user_info['unionid'];
+            $user_info = WeiXin::model()->getSnsUserInfo($user_data['access_token'],$user_data['openid']);
+            $user_data['nickname'] = isset($user_info['nickname'])?$user_info['nickname']:'';
+            $user_data['sex'] = isset($user_info['sex'])?$user_info['sex']:'';
+            $user_data['city'] = isset($user_info['city'])?$user_info['city']:'';
+            $user_data['unionid'] = isset($user_info['unionid'])?$user_info['unionid']:'';
 
             HSession::login($user_data);
             return parent::beforeAction();

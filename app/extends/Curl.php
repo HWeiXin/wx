@@ -38,6 +38,7 @@ class Curl {
     }
     private function _exec($url) {
         $this->url = $url;
+
         $this->setOption(CURLOPT_URL, $url);
         $c = curl_exec($this->_ch);
         if (!curl_errno($this->_ch))
@@ -48,9 +49,7 @@ class Curl {
 
     public function get($url, $params = array()) {
         $this->setOption(CURLOPT_HTTPGET, true);
-        $r =  $this->_exec($this->buildUrl($url, $params));
-        $this->close();
-        return $this->dealRequestData($r);
+        return $this->_exec($this->buildUrl($url, $params));
     }
 
     public function post($url, $data = null) {
@@ -59,19 +58,7 @@ class Curl {
         }
         $this->setOption(CURLOPT_POSTFIELDS, $data);
         $this->setOption(CURLOPT_POST, true);
-        $r =  $this->_exec($url);
-        return $this->dealRequestData($r);
-    }
-
-    private function dealRequestData($r){
-        $res_arr = json_decode($r,true);
-        if(!is_array($res_arr)){
-            $res_arr = array('errcode'=>-10000,'errmsg'=>'返回的不是JSON字符串');
-        }
-        if(isset($api_res_arr['errcode']) && $api_res_arr['errcode'] != 0){
-            HLog::model()->add('errcode：'.$res_arr['errcode'].' msg：'.$res_arr['errmsg'],'error');
-        }
-        return $res_arr;
+        return $this->_exec($url);
     }
 
     private static $_curl ;

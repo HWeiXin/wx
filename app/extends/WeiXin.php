@@ -173,7 +173,7 @@ class WeiXin {
         //是否过期
         if($now_time >= $this->_access_token_deadline){
             $url = $this->_api_url.'/token';
-            $api_res_arr = Curl::instance()->get($url,array(
+            $api_res_arr = $this->requestGet($url,array(
                 'grant_type' => 'client_credential',
                 'appid' => $this->_app_id,
                 'secret' => $this->_app_secret
@@ -198,7 +198,7 @@ class WeiXin {
      */
     public function getUserInfo($openid){
         $url = $this->getApiUrl('/user/info');
-        return Curl::instance()->get($url,array(
+        return $this->requestGet($url,array(
             'openid' => $openid,
             'lang' => 'zh_CN'
         ));
@@ -251,7 +251,7 @@ class WeiXin {
     public function creatMenu($menu){
         $url = $this->getApiUrl('/menu/create');
         $json_data = urldecode(json_encode($menu));
-        return Curl::instance()->post($url,$json_data);
+        return $this->requestPost($url,$json_data);
     }
 
     /**
@@ -260,7 +260,7 @@ class WeiXin {
      */
     public function delMenu(){
         $url = $this->getApiUrl('/menu/delete');
-        return Curl::instance()->get($url);
+        return $this->requestGet($url);
     }
 
     /**
@@ -270,7 +270,7 @@ class WeiXin {
      */
     public function getUserWebAccessToken($code){
         $url = $this->_sns_url.'/oauth2/access_token?appid='.$this->_app_id.'&secret='.$this->_app_secret.'&code='.$code.'&grant_type=authorization_code';
-        return Curl::instance()->get($url);
+        return $this->requestGet($url);
     }
 
     /**
@@ -281,9 +281,38 @@ class WeiXin {
      */
     public function getSnsUserInfo($access_token,$openid){
         $url = $this->_sns_url.'/userinfo?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
-        return file_get_contents($url);
-
-        return Curl::instance()->get($url);
+        return $this->requestGet($url);
     }
 
+    /**
+     * get请求
+     * @param string $url url
+     * @param array $data 请求参数数组
+     * @return array
+     */
+    public function requestGet($url,$data = array()){
+        return $this->dealRequestData(Curl::instance()->get($url,$data));
+    }
+
+    /**
+     * post请求
+     * @param string $url url
+     * @param array $data 请求参数数组
+     * @return array
+     */
+    public function requestPost($url,$data = array()){
+        return $this->dealRequestData(Curl::instance()->post($url,$data));
+    }
+    
+    private function dealRequestData($r){
+        $res_arr = json_decode($r,true);
+        if(!is_array($res_arr)){
+            $res_arr = array('errcode'=>-10000,'errmsg'=>'返回的不是JSON字符串');
+        }
+        if(isset($api_res_arr['errcode']) && $api_res_arr['errcode'] != 0){
+            HLog::model()->add('errcode：'.$res_arr['errcode'].' msg：'.$res_arr['errmsg'],'error');
+        }
+        return $res_arr;
+    }
+    
 } 
